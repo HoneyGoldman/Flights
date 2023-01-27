@@ -1,0 +1,54 @@
+<div class="outerContainer">
+
+
+    <div class="app tableContainer">
+        <div *ngIf="isLoading" class="waitingLogo">
+            <h1>Please Wait...</h1>
+        </div>
+        <div *ngIf="!isLoading" class="tableWidth">
+            <div class="inputDiv">
+                <input type="text" [(ngModel)]="searchText" placeholder="Search Flight" />
+                <div style="margin: 5px;">
+                    <span> &nbsp;&nbsp;Departure&nbsp;&nbsp;</span>
+                    <select [(ngModel)]="selectedDeparture" (change)="filter()">
+                        <option value="default">--</option>
+                        <option *ngFor="let str of Array.from(departures).sort()" value={{str}}>{{str}}</option>
+                    </select>
+                </div>
+                <div style="margin: 5px;">
+                    <span> &nbsp;&nbsp;Arrival&nbsp;&nbsp;</span>
+                    <select [(ngModel)]="selectedArrivals" (change)="filter()">
+                        <option value="default">--</option>
+                        <option *ngFor="let str of Array.from(arrivals).sort()" value={{str}}>{{str}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>&nbsp;&nbsp; Flight ID</th>
+                        <th>&nbsp;&nbsp;Departure</th>
+                        <th>&nbsp;&nbsp;Arrival</th>
+                        <th>&nbsp;&nbsp;Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let flight of flights | generic : searchText : 'fid'; let i = index;">
+                        <td>{{i+1}}</td>
+                        <td style="font-weight: bold;">{{flight.fid}}</td>
+                        <td>{{flight.departure}}</td>
+                        <td>{{flight.arrival}}</td>
+                        <td *ngIf="flight.success" class="status"><span class="dot"
+                                style="background-color: #87bc45;"></span>&nbsp;Available
+                        </td>
+                        <td *ngIf="!flight.success" class="status"><span class="dot"
+                                style="background-color: #ff0f0f;"></span>&nbsp;Canceled
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
